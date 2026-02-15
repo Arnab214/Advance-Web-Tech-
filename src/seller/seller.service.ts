@@ -8,16 +8,11 @@ export class SellerService {
   }
  
   addProduct(myobj: CreateProductDTO) {
-    return {
-      message: 'Product added successfully',
-      product: myobj,
-    };
+    return {message: 'Product added successfully',product: myobj,};
   }
  
   getInventory(): object {
-    return {
-      message: 'Seller Inventory List',
-    };
+    return {message: 'Seller Inventory List',};
   }
  
   updatePrice(id: string, price: number): object {
@@ -44,12 +39,9 @@ export class SellerService {
   }
  
   getReviews(): object {
-    return {
-      message: 'Product Reviews List',
-    };
+    return {message: 'Product Reviews List',};
   }
  
-  // 9️⃣ Update Profile (PUT /seller/profile)
   updateProfile(myobj: UpdateProfileDTO) {
     return {
       message: 'Profile updated successfully',
