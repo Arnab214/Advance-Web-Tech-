@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateManagerDTO, CreateAdminDTO } from './admin.dto';
+import {
+  CreateManagerDTO,
+  CreateAdminDTO,
+  UpdateManagerDTO,
+} from './admin.dto';
 
 @Injectable()
 export class AdminService {
@@ -40,6 +44,12 @@ export class AdminService {
       message: 'Delete Successful',
       name: name,
       Designation: 'Manager',
+    };
+  }
+  updateManager(name: string, updateData: UpdateManagerDTO): object {
+    return {
+      message: `Manager ${name} updated successfully`,
+      updatedData: updateData,
     };
   }
 }
