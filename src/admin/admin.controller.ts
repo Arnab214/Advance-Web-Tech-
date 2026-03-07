@@ -63,7 +63,6 @@ export class AdminController {
     return this.adminService.deleteCustomer(name);
   }
 
-  //delete Manager
   @Delete('deleteManager/:name')
   deleteManager(@Param('name') name: string): object {
     return this.adminService.deleteManager(name);
