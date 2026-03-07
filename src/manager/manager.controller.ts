@@ -45,21 +45,23 @@ export class ManagerController {
   addCustomer(@Body() myobj: CreateCustomerDTO): object {
     return this.managerService.addCustomer(myobj);
   }
-  @Delete('delete_manager')
-    @UsePipes(new ValidationPipe())
-    deleteManager(@Body() myobj: CreateManagerDTO): object {
-      return this.managerService.addManager(myobj);
-    }
-    @Delete('delete_customer')
-      @UsePipes(new ValidationPipe())
-      deleteCustomer(@Body() myobj: CreateCustomerDTO): object {
-        return this.managerService.addManager(myobj);
-      }
-      @Delete('delete_seller')
-        @UsePipes(new ValidationPipe())
-        deleteSeller(@Body() myobj: CreateManagerDTO): object {
-          return this.managerService.addManager(myobj);
-        }
+ @Delete('delete_manager')
+@UsePipes(new ValidationPipe())
+deleteManager(@Body('name') name: string): object {
+  return this.managerService.deleteManager(name);
+}
+
+@Delete('delete_customer')
+@UsePipes(new ValidationPipe())
+deleteCustomer(@Body('name') name: string): object {
+  return this.managerService.deleteCustomer(name);
+}
+
+@Delete('delete_seller')
+@UsePipes(new ValidationPipe())
+deleteSeller(@Body('name') name: string): object {
+  return this.managerService.deleteSeller(name);
+}
    @Get('findCustomer/:name')
   findCustomer(@Param('name') name: string): object {
     return this.managerService.findCustomer(name);
