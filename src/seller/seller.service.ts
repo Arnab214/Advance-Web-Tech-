@@ -1,8 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CreateProductDTO, UpdateProfileDTO } from './seller.dto';
- 
+import { CreateProductDTO, UpdateProfileDTO, UpdateSellerStatusDTO } from './seller.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Seller } from './seller.entity';
+
 @Injectable()
 export class SellerService {
+
+   constructor(
+    @InjectRepository(Seller)
+    private sellerRepo: Repository<Seller>, 
+  ) {}
   getHello(): object {
     return { message: 'Hello Seller!' };
   }
@@ -13,14 +21,6 @@ export class SellerService {
  
   getInventory(): object {
     return {message: 'Seller Inventory List',};
-  }
- 
-  updatePrice(id: string, price: number): object {
-    return {
-      message: 'Price updated successfully',
-      productId: id,
-      newPrice: price,
-    };
   }
  
   deleteItem(id: string): object {
@@ -48,5 +48,25 @@ export class SellerService {
       profile: myobj,
     };
   }
+async createSeller(data:any){
+  return this.sellerRepo.save(data);
 }
- 
+
+  async updateSellerStatus(id:number,status:string){
+  await this.sellerRepo.update(id,{status});
+  return this.sellerRepo.findOneBy({id:id});
+}
+ async getInactiveSellers(){
+  return this.sellerRepo.find({
+    where:{status:'inactive'}
+  });
+}
+ async getSellersOlderThan40(){
+  return this.sellerRepo
+  .createQueryBuilder('seller')
+  .where('seller.age > :age',{age:40})
+  .getMany();
+}
+
+}
+
