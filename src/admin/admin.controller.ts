@@ -8,6 +8,7 @@ import {
   Put,
   UsePipes,
   ValidationPipe,
+  Query,
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import {
@@ -76,5 +77,26 @@ export class AdminController {
     @Body() myobj: UpdateManagerDTO,
   ): object {
     return this.adminService.updateManager(name, myobj);
+  }
+
+  //task3
+  @Post('create')
+  create(@Body('country') country: string) {
+    return this.adminService.createAdmin(country);
+  }
+
+  @Put('update-country/:id')
+  update(@Param('id') id: number, @Body('country') country: string) {
+    return this.adminService.updateCountry(id, country);
+  }
+
+  @Get('by-date')
+  getByDate(@Query('date') date: string) {
+    return this.adminService.getByDate(date);
+  }
+
+  @Get('unknown-country')
+  getUnknown() {
+    return this.adminService.getUnknownCountry();
   }
 }

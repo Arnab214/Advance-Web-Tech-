@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, Raw } from 'typeorm';
 import {
   CreateManagerDTO,
   CreateAdminDTO,
   UpdateManagerDTO,
 } from './admin.dto';
+import { AdminEntity } from './admin.entity';
 
 @Injectable()
 export class AdminService {
@@ -51,5 +54,38 @@ export class AdminService {
       message: `Manager ${name} updated successfully`,
       updatedData: updateData,
     };
+  }
+  //task3
+  constructor(
+    @InjectRepository(AdminEntity)
+    private adminRepository: Repository<AdminEntity>,
+  ) {}
+
+  // Create a user [cite: 42]
+  async createAdmin(country?: string): Promise<AdminEntity> {
+    const newAdmin = this.adminRepository.create({ country });
+    return await this.adminRepository.save(newAdmin);
+  }
+
+  // Modify the country of an existing user [cite: 43]
+  async updateCountry(id: number, country: string): Promise<AdminEntity> {
+    await this.adminRepository.update(id, { country });
+    return this.adminRepository.findOneBy({ id });
+  }
+
+  // Retrieve users by their joining date [cite: 44]
+  async getByDate(date: string): Promise<AdminEntity[]> {
+    return await this.adminRepository.find({
+      where: {
+        joiningDate: Raw((alias) => `CAST(${alias} AS DATE) = :date`, { date }),
+      },
+    });
+  }
+
+  // Retrieve users with the default country value ('Unknown') [cite: 45]
+  async getUnknownCountry(): Promise<AdminEntity[]> {
+    return await this.adminRepository.find({
+      where: { country: 'Unknown' },
+    });
   }
 }
